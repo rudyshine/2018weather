@@ -58,22 +58,22 @@ if __name__ == '__main__':
         idName=idName.rstrip('\r\n')
         print(idNumber)
         print(idName)
-        # try:
-        getInfo()
-        time.sleep(3)
-        # except :
-        #     print('IP被封1，程序休息当前ID为：' + idNumber)
-        #     time.sleep(600)
-        #     try:
-        #         getInfo()
-        #         time.sleep(3)
-        #     except :
-        #         print('IP被封2，程序休息当前ID为：' + idNumber)
-        #         time.sleep(3600)
-        #         try:
-        #             getInfo()
-        #             time.sleep(3)
-        #         except :
-        #             print("IP被封"+ idNumber)
+        try:
+            getInfo()
+            time.sleep(3)
+        except :
+            print('IP被封1，程序休息当前ID为：' + idNumber)
+            time.sleep(600)
+            try:
+                getInfo()
+                time.sleep(3)
+            except :
+                print('IP被封2，程序休息当前ID为：' + idNumber)
+                time.sleep(3600)
+                try:
+                    getInfo()
+                    time.sleep(3)
+                except :
+                    print("IP被封"+ idNumber)
         idNumber = inforead.readline()
         idName = nameforead.readline()
