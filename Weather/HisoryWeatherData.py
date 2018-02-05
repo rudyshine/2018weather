@@ -33,10 +33,10 @@ def getInfo():
     year = "2018"
     month = "01"  ##增量数据收集，手动修改月份
 
-    ##全量收集，直接打开月份注释即可
+    # #全量收集，直接打开月份注释即可
     # month=1
     # for i in range(month, 13):
-        # month = str(i) if i > 9 else "0" + str(i)  # 小于10的月份要补0
+    #     month = str(i) if i > 9 else "0" + str(i)  # 小于10的月份要补0
     save(parse(request(year, month,idNumber)))
 
 
