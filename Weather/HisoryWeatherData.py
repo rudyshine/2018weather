@@ -17,7 +17,6 @@ def request(year, month,idNumber):
 def parse(url):
     time.sleep(10)
     json_str = url.content.decode(encoding='utf-8')[11:] #获取数据
-    print(json_str)
     return json.loads(json_str)  ##解析json数据
 
 def save(list):
@@ -44,8 +43,8 @@ def getInfo():
 
 if __name__ == '__main__':
 
-    client = pymongo.MongoClient('172.28.171.13', 27017)   # 连接mongodb,端口27017 正式数据库
-    # client = pymongo.MongoClient('localhost', 27017)   # 连接mongodb,端口27017
+    # client = pymongo.MongoClient('172.28.171.13', 27017)   # 连接mongodb,端口27017 正式数据库
+    client = pymongo.MongoClient('localhost', 27017)   # 连接mongodb,端口27017
     test = client['WeatherData']                              # 创建数据库文件test
     forecast = test['HistoryData2018']                        # 创建表forecast
     inforead = codecs.open("list_CityId.txt", 'r', 'utf-8')   ##打开城市ID列表文件
@@ -56,8 +55,6 @@ if __name__ == '__main__':
     while idNumber != "":
         idNumber = idNumber.rstrip('\r\n')
         idName=idName.rstrip('\r\n')
-        print(idNumber)
-        print(idName)
         try:
             getInfo()
             time.sleep(3)
