@@ -72,6 +72,7 @@ if __name__ == '__main__':
                     getInfo()
                     time.sleep(3)
                 except :
+                    pass
                     print("IP被封"+ idNumber)
         idNumber=inforead.readline()
         idName=nameforead.readline()
