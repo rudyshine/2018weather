@@ -6,7 +6,7 @@ import pymongo
 import time
 
 def request(year, month,idNumber):
-    url = "http://d1.weather.com.cn/calendar_new/"+year+"/"+idNumber+"_"+year+month+".html?_=1495685758174"
+    url = "http://d1.weather.com.cn/calendar_new/"+ year+ "/" +str(idNumber)+"_"+year+month+".html?_=1495685758174"
     print(url)
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36",
@@ -14,9 +14,10 @@ def request(year, month,idNumber):
     }
     return requests.get(url,headers=headers)
 
-def parse(url):
+def parse(res):
     time.sleep(10)
-    json_str = url.content.decode(encoding='utf-8')[11:] #获取数据
+    json_str = res.content.decode(encoding='utf-8')[11:] #获取数据
+    print(json_str)
     return json.loads(json_str)  ##解析json数据
 
 def save(list):
@@ -72,5 +73,5 @@ if __name__ == '__main__':
                     time.sleep(3)
                 except :
                     print("IP被封"+ idNumber)
-        idNumber = inforead.readline()
-        idName = nameforead.readline()
+        idNumber=inforead.readline()
+        idName=nameforead.readline()

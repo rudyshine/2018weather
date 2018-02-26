@@ -6,6 +6,7 @@ import time
 
 def request(year, month):
     url = "http://d1.weather.com.cn/calendar_new/" + year + "/101280701_" + year + month + ".html?_=1495685758174"
+    print(url)
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36",
         "Referer": "http://www.weather.com.cn/weather40d/101280701.shtml",
