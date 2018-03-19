@@ -90,7 +90,7 @@ if __name__ == '__main__':
                 write_data(result, 'weather.csv')
             except:
                 print('IP被封2，程序休息当前ID为：' + idNumber)
-                time.sleep(3600)
+                time.sleep(600)
                 try:
                     html = get_content(url)
                     result = get_data(html, idNumber, idName)
