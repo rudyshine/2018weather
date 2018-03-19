@@ -6,6 +6,7 @@ import random
 import time
 import socket
 import http.client
+import codecs
 import urllib.request
 from bs4 import BeautifulSoup
 
@@ -28,7 +29,8 @@ def get_content(url , data = None):
         time.sleep(random.choice(range(5,15)))
     return rep.text
 
-def get_data(html_text):
+
+def get_data(html_text,id,name):
     final = []
     bs = BeautifulSoup(html_text,"html.parser")# 创建BeautifulSoup对象
     body = bs.body# 获取body部分
@@ -37,25 +39,24 @@ def get_data(html_text):
     li = ul.find_all('li')# 获取所有的li
     for day in li:# 对每个li标签中的内容进行遍历
         temp = []
+        idNumber = id
+        temp.append(idNumber)
+        idName=name
+        temp.append(idName)
         date = day.find('h1').string# 找到日期
-        # print(date)
         temp.append(date)# 添加到temp中
         inf = day.find_all('p')# 找到li中的所有p标签
         temp.append(inf[0].string,)# 第一个p标签中的内容（天气状况）加到temp中
-        # if inf[1].find('span')is None:
-        #     temperature_highest =None# 天气预报可能没有当天的最高气温（到了傍晚，就是这样），需要加个判断语句,来输出最低气温
-        # else:
         temperature_highest = day.find('span').string# 找到最高温
         temperature_highest = temperature_highest.replace('℃','')# 到了晚上网站会变，最高温度后面也有个℃
-        print('11111111111111',temperature_highest)
+        temp.append(temperature_highest)  # 将最高温添加到temp中
         temperature_lowest = day.find('i').string# 找到最低温
-        print(temperature_lowest)
-
         temperature_lowest = temperature_lowest.replace('℃','')# 最低温度后面有个℃，去掉这个符号
-        temp.append(temperature_highest)# 将最高温添加到temp中
         temp.append(temperature_lowest)#将最低温添加到temp中
         final.append(temp)#将temp加到final中
     return final
+
+
 
 def write_data(data, name):
     file_name = name
@@ -64,8 +65,38 @@ def write_data(data, name):
         f_csv.writerows(data)
 
 if __name__ == '__main__':
-    url ='http://www.weather.com.cn/weather/101190401.shtml'
-    html = get_content(url)
-    result = get_data(html)
-    print(result)
-    write_data(result,'weather.csv')
+
+    inforead = codecs.open("list_CityId.txt", 'r', 'utf-8')  ##打开城市ID列表文件
+    idNumber = inforead.readline().rstrip('\r\n')  ##读城市列表
+    nameforead = codecs.open("list_CityName.txt", 'r', 'utf-8')  ##打开城市名称列表文件
+    idName = nameforead.readline().rstrip('\r\n')  ##读城市名称
+    while idNumber != "":
+        idNumber = idNumber.rstrip('\r\n')
+        idName = idName.rstrip('\r\n')
+        url ='http://www.weather.com.cn/weather/'+idNumber+'.shtml'
+        print(url)
+        try:
+            html = get_content(url)
+            result = get_data(html,idNumber,idName)
+            print(result)
+            write_data(result,'weather.csv')
+        except:
+            print('IP被封1，程序休息当前ID为：' + idNumber)
+            time.sleep(600)
+            try:
+                html = get_content(url)
+                result = get_data(html, idNumber, idName)
+                print(result)
+                write_data(result, 'weather.csv')
+            except:
+                print('IP被封2，程序休息当前ID为：' + idNumber)
+                time.sleep(3600)
+                try:
+                    html = get_content(url)
+                    result = get_data(html, idNumber, idName)
+                    print(result)
+                    write_data(result, 'weather.csv')
+                except:
+                    pass
+        idNumber = inforead.readline().rstrip('\r\n')
+        idName = nameforead.readline().rstrip('\r\n')
